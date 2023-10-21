@@ -3,7 +3,7 @@ import scipy.stats as st
 
 import matplotlib.pyplot as plt
 
-s = 100
+s = 110
 k = 120
 r = 0.05
 T = 0.5
