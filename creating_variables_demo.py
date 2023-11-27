@@ -149,3 +149,14 @@ end = time.perf_counter()
 print('set:', end - start)
 # set: 3.0006126000080258
 
+# unpacking iterables
+a, b, c = [2, 3, 4]
+print(a, b, c)
+a, b = b, a
+print(a, b, c)
+
+# Unpacking sets and dictionaries. order may not be the same
+x, y, z, a, b, c = {7: 'a', 0: 'z', 4: 'x', 2: 'b', 9: 'v', 1: 'c'}
+print(x, y, z, a, b, c)
+
+
