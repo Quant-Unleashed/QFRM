@@ -4,7 +4,13 @@ import ctypes
 import gc
 import string
 
+# variable
 a = [1, 2, 3]
+b = a
+# memory address
+id(a)
+
+a_add = id(a)
 
 # Count number of references to the memory address of a variable using sys gives +1.
 print(sys.getrefcount(a))
@@ -52,6 +58,13 @@ print(c(2))
 
 # Mutability vs immutability
 
+list1 = [1,2,3]
+id(list1)
+list1.append(4)
+list1
+id(list1)
+
+
 tuple_1 = ([1,2], 'a')
 print(id(tuple_1))
 
@@ -66,6 +79,61 @@ print(abc)
 
 abc.append(5)
 print(xyz)
+
+# Beware of mutable object as optional parameter
+def add_item(name, quantity, unit, grocery_list=[]):
+    item_fmt = "{0} ({1} {2})".format(name, quantity, unit)
+    grocery_list.append(item_fmt)
+    return grocery_list
+
+store_1 = add_item('bananas', 2, 'units')
+add_item('grapes', 1, 'bunch', store_1)
+store_1
+store_2 = add_item('milk', 1, 'gallon')
+print(store_2)
+
+
+def add_item(name, quantity, unit, grocery_list=None):
+    if not grocery_list:
+        grocery_list = []
+    item_fmt = "{0} ({1} {2})".format(name, quantity, unit)
+    grocery_list.append(item_fmt)
+    return grocery_list
+
+store_1 = add_item('bananas', 2, 'units')
+add_item('grapes', 1, 'bunch', store_1)
+store_2 = add_item('milk', 1, 'gallon')
+store_2
+
+
+# Mutable as favourable optional parameter
+def factorial(n):
+    if n < 1:
+        return 1
+    else:
+        print('calculating {0}!'.format(n))
+        return n * factorial(n-1)
+
+factorial(3)
+factorial(4)
+factorial(3)
+
+def factorial(n, cache={}):
+    if n < 1:
+        return 1
+    elif n in cache:
+        return cache[n]
+    else:
+        print('calculating {0}!'.format(n))
+        result = n * factorial(n-1)
+        cache[n] = result
+        return result
+
+
+factorial(3)
+factorial(5)
+factorial(4)
+factorial(7)
 
 
 # is vs ==
@@ -158,5 +226,46 @@ print(a, b, c)
 # Unpacking sets and dictionaries. order may not be the same
 x, y, z, a, b, c = {7: 'a', 0: 'z', 4: 'x', 2: 'b', 9: 'v', 1: 'c'}
 print(x, y, z, a, b, c)
+
+
+# Keywords and Positional parameters, *, *args and **kwargs ()
+def func(a, b, *args):
+    print(a, b, args)
+
+
+func(1, 2, 'x', 'y', 'z')
+
+
+def func1(a, b=2, *, c, d=4):
+    print(a, b, c, d)
+
+
+func1(c=3, a=1, b=2, d=4)
+func1(c=3, a=1)
+
+
+def func2(a, b, *, c, d=4, **kwargs):
+    print(a, b, c, d, kwargs)
+
+
+func2(x=100, y=200, z=300, c=3, b=2, a=1)
+
+# Print also has *object
+def func_print(name):
+    '''    This is my first docString    '''
+
+    print(name, "Hi!", sep='-', end=' *** ')
+    print("I didn't know print has *args and more parameters")
+
+
+func_print('Aman')
+
+help(func_print)
+
+
+
+
+
+
 
 
